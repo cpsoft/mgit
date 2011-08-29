@@ -3,27 +3,13 @@
 import sys
 import os
 from argparser import ArgParser
-
-def getCmd(argv):
-	try:
-		module=__import__(argv[0])
-	except:
-		return None
-	else:
-		return module.getInstance(argv[1:])
+from commands import Commands
 
 def main(orig_args):
 	parser = ArgParser(usage="%s <command> [options]" % "mgit", version="%s 0.1" % "mgit")
 	cmd, args = parser.parse(orig_args)
-	cmd += ".py"
-	try:
-		print "cmd: %s" % cmd
-		print "args: %s" % args
-		os.execv(cmd, args)
-	except OSError, e:
-		print >> sys.stderr, "fatal:unable to start %s" % cmd
-		print >> sys.stderr, "fatal: %s" % e
-		sys.exit(148)
+	cmd = Commands(cmd)
+	cmd.run(args)
 	
 	return
 
