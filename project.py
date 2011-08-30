@@ -1,5 +1,6 @@
 import os
-from xml.dom import minidom
+from xml.etree.ElementTree import ElementTree
+from xml.etree.ElementTree import Element
 import subproject
 
 PROJECT_CONFIG_PATH="./.mgit"
@@ -7,20 +8,30 @@ PROJECT_CONFIG_FILE=PROJECT_CONFIG_PATH + "/project.xml"
 
 class Project():
 	def __init__(self):
-		if os.path.exists(PROJECT_CONFIG_FILE):
-			self.dom = minidom.parse(PROJECT_CONFIG_FILE)
-		else:
-			if not os.path.exists(PROJECT_CONFIG_PATH):
-				os.mkdir(PROJECT_CONFIG_PATH)
-			impl = minidom.getDOMImplementation()
-			self.dom = impl.createDocument(None, 'Project', None)
+		self.tree = ElementTree();
+		if not os.path.exists(PROJECT_CONFIG_PATH):
+			os.mkdir(PROJECT_CONFIG_PATH)
+		try:
+			self.tree.parse(PROJECT_CONFIG_FILE)
+		except:
+			print os.path.basename(os.getcwd())
+			root = Element('Project', {'name':os.path.basename(os.getcwd())})
+			self.tree._setroot(root)
 
 	def save(self):
-		f = open(PROJECT_CONFIG_FILE, 'w');
-		self.dom.writexml(f, addindent='\t', newl='\n')
-		f.close()
+		self.tree.write(PROJECT_CONFIG_FILE, xml_declaration=True, method="xml")
+		#self.tree.write(PROJECT_CONFIG_FILE, method="xml")
 
-	def get_sub_project(self, name, new=False):
-		for item in self.dom.getElementByTagName("SubProject"):
-			if item.getAttribute("name") == name:
-				print item
+	def find(self, name):
+		for i in self.tree.iter('SubProject'):
+			if i.get('name') == name:
+				return i
+
+	def append(self, subproject):
+		if subproject == None or subproject.obj == None:
+			return
+		node = self.find(subproject.get('name'))
+		root = self.tree.getroot()
+		if node != None:
+			root.remove(node)
+		root.append(subproject.obj)

@@ -1,0 +1,8 @@
+1.add sub project
+	clone base repo:
+		git clone /home/server/project project
+		cd project
+	clone subproject repo:
+		git clone /home/server/subproject subproject1
+	add subproject to project:
+		mgit attach subproject1
