@@ -2,10 +2,11 @@ import os
 from xml.etree.ElementTree import Element
 
 class SubProject():
-	def __init__(self, name):
-		self.obj = Element('SubProject', {'name':name})
+	def __init__(self, name=None):
+		if name != None:
+			self.obj = Element('SubProject', {'name':name})
 
-	def __setObj(self, obj):
+	def _setObj(self, obj):
 		self.obj = obj
 
 	def get(self, key):

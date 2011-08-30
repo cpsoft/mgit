@@ -1,7 +1,7 @@
 import os
 from xml.etree.ElementTree import ElementTree
 from xml.etree.ElementTree import Element
-import subproject
+from subproject import SubProject
 
 PROJECT_CONFIG_PATH="./.mgit"
 PROJECT_CONFIG_FILE=PROJECT_CONFIG_PATH + "/project.xml"
@@ -14,13 +14,11 @@ class Project():
 		try:
 			self.tree.parse(PROJECT_CONFIG_FILE)
 		except:
-			print os.path.basename(os.getcwd())
 			root = Element('Project', {'name':os.path.basename(os.getcwd())})
 			self.tree._setroot(root)
 
 	def save(self):
 		self.tree.write(PROJECT_CONFIG_FILE, xml_declaration=True, method="xml")
-		#self.tree.write(PROJECT_CONFIG_FILE, method="xml")
 
 	def find(self, name):
 		for i in self.tree.iter('SubProject'):
@@ -35,3 +33,17 @@ class Project():
 		if node != None:
 			root.remove(node)
 		root.append(subproject.obj)
+
+	def iter(self):
+		subproject = SubProject()
+		for i in self.tree.iter('SubProject'):
+			subproject._setObj(i)
+			yield subproject
+
+	def inSubProject(self, cmd):
+		cwd = os.getcwd()
+		for i in self.iter():
+			print "On:" + i.get("name") + ":"
+			os.chdir("/".join([cwd, i.get("name")]))
+			cmd.func(i)
+			

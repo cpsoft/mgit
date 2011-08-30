@@ -1,11 +1,20 @@
 
-import attach
+from attach import Attach
+from sync import Sync
+from clone import Clone
+from default import Default
 
 class Commands():
-	cmds={"attach":lambda:attach.Attach()}
+	cmds={"attach":lambda:Attach(),
+		"sync":lambda:Sync(),
+		"clone":lambda:Clone()
+		}
 	def __init__(self, cmd_name):
-		self.cmd = self.cmds[cmd_name]()
-
+		if cmd_name in self.cmds.keys():
+			self.cmd = self.cmds[cmd_name]()
+		else:
+			self.cmd = Default()
+	
 	def print_usages(self):
 		for k,v in self.cmds.items():
 			if v:

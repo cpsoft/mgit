@@ -20,7 +20,7 @@ class GitConfig():
 		
 	def __init__(self, module):
 		head=None
-		for i in open(".git/config", "r"):
+		for i in open(module + "/.git/config", "r"):
 			i = i.strip()
 			if len(i) == 0:
 				continue
@@ -36,11 +36,11 @@ class GitConfig():
 		self.head=None
 		#print self.data
 
-	def getBranch(self):
+	def branch(self):
 		branchs = self.data["branch"]
 		return branchs.keys()[0]
 
-	def getUri(self):
+	def uri(self):
 		branchs = self.data["branch"]
 		branch = branchs[branchs.keys()[0]]
 		remotes = self.data["remote"]
@@ -50,5 +50,5 @@ class GitConfig():
 
 if __name__ == "__main__":
 	gconf = GitConfig("this")
-	print gconf.getBranch()
-	print gconf.getUri()
+	print gconf.branch()
+	print gconf.uri()

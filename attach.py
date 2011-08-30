@@ -3,8 +3,7 @@ import os
 from optparse import OptionParser
 from project import Project
 from subproject import SubProject
-
-configFilename = "./.mgit/project.xml"
+from gitconfig import GitConfig
 
 class Attach():
 	def __init__(self):
@@ -16,17 +15,19 @@ class Attach():
 
 	def append_ignore_file(self, submodule):
 		print submodule
-		ignoreFile = open(".gitignore", "wa")
+		ignoreFile = open(".gitignore", "w+a")
 		for line in ignoreFile:
-			if submodule == line[0:len(submodule)]:
+			if submodule == line.strip():
 				return
 		ignoreFile.write(submodule)
 		ignoreFile.close()
 	
-	def append_project_file(self, submodule, uri):
+	def append_project_file(self, submodule):
 		self.project = Project()
 		subproject = SubProject(submodule)
-		subproject.set("uri", uri)
+		gitconf = GitConfig(submodule)
+		subproject.set("uri", gitconf.uri())
+		subproject.set("branch", gitconf.branch())
 		self.project.append(subproject)
 		self.project.save()
 
@@ -44,8 +45,8 @@ class Attach():
 		self.subproject = SubProject(submodule)
 		
 		self.append_ignore_file(submodule)
-		self.append_project_file(submodule, args[0])	
-		
+		self.append_project_file(submodule)	
+		"""
 		cmd = ["git", "clone"]
 		cmd += args
 		cmd = " ".join(cmd)
@@ -53,4 +54,5 @@ class Attach():
 		ret = os.system(cmd)
 		if 0 != ret:
 			return -1
+		"""
 
