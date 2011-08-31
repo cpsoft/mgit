@@ -23,4 +23,5 @@ class Commands():
 	def run(self, args):
 		if not self.cmd:
 			return;
+			
 		self.cmd.run(args)

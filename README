@@ -6,3 +6,5 @@
 		git clone /home/server/subproject subproject1
 	add subproject to project:
 		mgit attach subproject1
+2.push whole project
+	mgit push

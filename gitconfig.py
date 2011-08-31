@@ -38,17 +38,15 @@ class GitConfig():
 
 	def branch(self):
 		branchs = self.data["branch"]
-		return branchs.keys()[0]
+		return list(branchs.keys())[0]
 
 	def uri(self):
 		branchs = self.data["branch"]
-		branch = branchs[branchs.keys()[0]]
+		branch = branchs[list(branchs.keys())[0]]
 		remotes = self.data["remote"]
 		return remotes[branch["remote"]]["url"]
-		
-		
 
 if __name__ == "__main__":
 	gconf = GitConfig("this")
-	print gconf.branch()
-	print gconf.uri()
+	print(gconf.branch())
+	print(gconf.uri())

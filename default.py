@@ -15,7 +15,7 @@ class Default():
 		os.system(" ".join(cmd))
 	
 	def run(self, args):
-		for i in xrange(0, len(args)):
+		for i in range(0, len(args)):
 			if args[i].find(" ") > 0:
 				args[i]="\"%s\"" % args[i]
 		self.args = args

@@ -8,7 +8,7 @@ class ArgParser():
 	def parse(self, args):
 		l = len(args)
 		if l <= 1:
-			print self.usage
+			print(self.usage)
 			sys.exit(-1)
 		else:
 			cmd = args[1]
@@ -16,6 +16,4 @@ class ArgParser():
 		return cmd, arg
 
 	def print_usage(self):
-		print self.usage 
-		
-
+		print(self.usage)

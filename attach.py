@@ -14,12 +14,14 @@ class Attach():
 		self.parser.print_usage()
 
 	def append_ignore_file(self, submodule):
-		print submodule
-		ignoreFile = open(".gitignore", "w+a")
-		for line in ignoreFile:
-			if submodule == line.strip():
-				return
-		ignoreFile.write(submodule)
+		if os.path.exists(".gitignore"):
+			ignoreFile = open(".gitignore","r")
+			for line in ignoreFile:
+				if submodule == line.strip():
+					return
+			ignoreFile.close()
+		ignoreFile = open(".gitignore", "a")
+		ignoreFile.write(submodule + "\n")
 		ignoreFile.close()
 	
 	def append_project_file(self, submodule):
@@ -39,20 +41,10 @@ class Attach():
 	
 		submodule = os.path.splitext(os.path.basename(args[0]))[0] if len(args) <= 1 else args[1]
 		if not os.path.exists(submodule):
-			print submodule+" not exists"
+			print(submodule+" not exists")
 			return
 
 		self.subproject = SubProject(submodule)
 		
 		self.append_ignore_file(submodule)
 		self.append_project_file(submodule)	
-		"""
-		cmd = ["git", "clone"]
-		cmd += args
-		cmd = " ".join(cmd)
-		
-		ret = os.system(cmd)
-		if 0 != ret:
-			return -1
-		"""
-

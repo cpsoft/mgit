@@ -43,7 +43,7 @@ class Project():
 	def inSubProject(self, cmd):
 		cwd = os.getcwd()
 		for i in self.iter():
-			print "On:" + i.get("name") + ":"
+			print("On:" + i.get("name") + ":")
 			os.chdir("/".join([cwd, i.get("name")]))
 			cmd.func(i)
 			

@@ -20,12 +20,10 @@ class Clone():
 		if len(args) <= 0:
 			self.print_usage()
 			return
-		print args
 		cwd = os.path.splitext(os.path.basename(args[0]))[0] if len(args) <= 1 else args[1]
 		cmd = ['git', 'clone'] + args
 		if options.branch != None:
 			cmd += ["-b", options.branch]
-		print cmd
 		if 0 != os.system(" ".join(cmd)):
 			return
 		cmd = ['mgit', 'sync', "-C", cwd]
