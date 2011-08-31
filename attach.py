@@ -39,7 +39,14 @@ class Attach():
 			self.parser.print_usage()
 			return
 	
-		submodule = os.path.splitext(os.path.basename(args[0]))[0] if len(args) <= 1 else args[1]
+		if len(args) > 1:
+			submodule = args[1]
+		else:
+			submodule = os.path.basename(args[0])
+			test = os.path.splitext(submodule)
+			if len(test) > 1 and test[1] == ".git":
+				submodule=test[0]
+
 		if not os.path.exists(submodule):
 			print(submodule+" not exists")
 			return
