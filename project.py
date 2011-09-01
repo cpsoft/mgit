@@ -22,23 +22,24 @@ class Project():
 	def save(self):
 		self.tree.write(PROJECT_CONFIG_FILE, xml_declaration=True, method="xml")
 
+	def iter(self):
+		return self.tree.iter('SubProject')
+
 	def find(self, name):
-		for i in self.tree.getiterator('SubProject'):
+		for i in self.iter():
 			if i.get('name') == name:
 				return i
 
-	def iter(self):
-		subproject = SubProject()
-		for i in self.tree.iter('SubProject'):
-			subproject._setObj(i)
-			yield subproject
-
-	def inSubProject(self, cmd):
+	def inSubProject(self):
 		cwd = os.getcwd()
-		for i in self.iter():
-			print("On:" + i.get("name") + ":")
-			os.chdir("/".join([cwd, i.get("name")]))
-			cmd.func(i)
+		for node in self.iter():
+			name = node.get('name')
+			print("")
+			print("On:%s" % name)
+			print("***************************************")
+			os.chdir("/".join([cwd, name]))
+			yield
+			print("***************************************")
 
 	def clone(self):
 		for module in self.iter():
@@ -115,5 +116,5 @@ class Project():
 				self.__remove_ignore_file(module)
 				self.save()
 		else:
-			data = [node.get('name') for node in self.tree.getiterator('SubProject')]
+			data = [node.get('name') for node in self.iter()]
 			self.__remove_ignore_file(data)

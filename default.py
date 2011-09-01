@@ -1,7 +1,6 @@
 import os
 from optparse import OptionParser
 from project import Project
-from subproject import SubProject
 
 class Default():
 	def __init__(self):
@@ -10,10 +9,6 @@ class Default():
 	def print_usage(self):
 		return
 
-	def func(self, subproject):
-		cmd = ['mgit'] + self.args
-		os.system(" ".join(cmd))
-	
 	def run(self, args):
 		for i in range(0, len(args)):
 			if args[i].find(" ") > 0:
@@ -22,4 +17,6 @@ class Default():
 		self.project = Project()
 		cmd = ['git'] + self.args
 		os.system(" ".join(cmd))
-		self.project.inSubProject(self)
+		for i in self.project.inSubProject():
+			cmd = ['mgit'] + self.args
+			os.system(" ".join(cmd))

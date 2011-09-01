@@ -1,7 +1,6 @@
 import os
 from optparse import OptionParser
 from project import Project
-from subproject import SubProject
 
 class Sync():
 	def __init__(self):

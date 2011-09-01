@@ -13,6 +13,7 @@ class Commands():
 		"sync":lambda:Sync(),
 		"clone":lambda:Clone()
 		}
+
 	def __init__(self, cmd_name):
 		if cmd_name in self.cmds.keys():
 			self.cmd = self.cmds[cmd_name]()
