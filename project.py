@@ -79,10 +79,11 @@ class Project():
 		ignoreFile.write(module + "\n")
 		ignoreFile.close()
 
-	def __remove_ignore_file(self, module):
+	def __remove_ignore_file(self, modules):
 		if os.path.exists(".gitignore"):
 			ignoreFile = open(".gitignore","r")
-			data = [line for line in ignoreFile if line.strip() != module]
+			print modules
+			data = [line.strip() for line in ignoreFile if not (line.strip() in modules)]
 			ignoreFile = open(".gitignore", "w")
 			ignoreFile.write("\n".join(data))
 			ignoreFile.close()
@@ -105,13 +106,14 @@ class Project():
 		self.save()
 		return 0
 
-	def remove(self, module):
-		if module == None:
-			return -1
-		node = self.find(module)
-		root = self.tree.getroot()
-		if node != None:
-			root.remove(node)
-			self.__remove_ignore_file(module)
-			self.save()
-		
+	def remove(self, module=None):
+		if module != None:
+			node = self.find(module)
+			root = self.tree.getroot()
+			if node != None:
+				root.remove(node)
+				self.__remove_ignore_file(module)
+				self.save()
+		else:
+			data = [node.get('name') for node in self.tree.getiterator('SubProject')]
+			self.__remove_ignore_file(data)
