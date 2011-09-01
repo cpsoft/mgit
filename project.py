@@ -1,7 +1,6 @@
 import os
 from xml.etree.ElementTree import ElementTree
 from xml.etree.ElementTree import Element
-from subproject import SubProject
 from git import Git
 
 PROJECT_CONFIG_PATH="./.mgit"

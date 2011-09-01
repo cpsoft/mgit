@@ -13,8 +13,14 @@ class Commands():
 		"sync":lambda:Sync(),
 		"clone":lambda:Clone()
 		}
+	
+	forbiddance=["rm"]
 
 	def __init__(self, cmd_name):
+		if cmd_name in self.forbiddance:
+			print "The %s is forbidden command in mgit! Please use git." % cmd_name
+			self.cmd = None
+			return
 		if cmd_name in self.cmds.keys():
 			self.cmd = self.cmds[cmd_name]()
 		else:
@@ -28,5 +34,4 @@ class Commands():
 	def run(self, args):
 		if not self.cmd:
 			return;
-			
 		self.cmd.run(args)
