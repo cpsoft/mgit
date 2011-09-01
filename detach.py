@@ -3,7 +3,7 @@ import os
 from optparse import OptionParser
 from project import Project
 
-class Attach():
+class Detach():
 	def __init__(self):
 		self.parser = OptionParser()
 		self.parser.set_usage("mgit attach <subproject name>")
@@ -16,7 +16,6 @@ class Attach():
 		if len(args) <= 0:
 			self.parser.print_usage()
 			return
-	
 		if len(args) > 1:
 			module = args[1]
 		else:
@@ -24,10 +23,8 @@ class Attach():
 			test = os.path.splitext(module)
 			if len(test) > 1 and test[1] == ".git":
 				module=test[0]
-
 		if not os.path.exists(module):
 			print("module %s not exists." % module)
 			return
-
 		project = Project()
-		project.append(module)
+		project.remove(module)

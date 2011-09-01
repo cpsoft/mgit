@@ -14,20 +14,10 @@ class Sync():
 	def print_usage(self):
 		self.parser.print_usage()
 
-	def func(self, subproject):
-		cmd = ['git', 'clone', subproject.get("uri"), subproject.get("name")]
-		branch = subproject.get("branch")
-		if branch != None:
-			cmd += ["-b", branch]
-		os.system(" ".join(cmd))
-
 	def run(self, args):
 		self.options,args = self.parser.parse_args(args)
 		cwd = os.getcwd()
 		if self.options.repodir != None:
 			os.chdir("/".join([cwd, self.options.repodir]))
 		self.project = Project()
-		for i in self.project.iter():
-			self.func(i)
-		os.chdir(cwd)
-		
+		self.project.clone()
