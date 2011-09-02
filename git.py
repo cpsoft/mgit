@@ -24,15 +24,16 @@ class Git():
 
 	def current_remote_uri(self, branch=None, remote=None):
 		if branch != None:
+			branch = branch.strip()
 			cmd = """git config --get branch.%s.remote""" % branch
-			remote = os.popen(cmd).read()
-			if remote != None:
-				cmd = """git config --get remote.%s.url""" % remote.strip()
-				uri = os.popen(cmd).read()
-		if uri == None:
+			remote = os.popen(cmd).read().strip()
+			if len(remote) > 0:
+				cmd = """git config --get remote.%s.url""" % remote
+				uri = os.popen(cmd).read().strip()
+		if len(uri) > 0:
 			cmd = """git config --get remote.origin.url"""
-			uri = os.popen(cmd).read()
-		return uri.strip()
+			uri = os.popen(cmd).read().strip()
+		return uri
 
 	def is_repo(self):
 		cmd = """git rev-parse --git-dir >/dev/null 2>&1"""
