@@ -85,7 +85,7 @@ class Project():
 			print modules
 			data = [line.strip() for line in ignoreFile if not (line.strip() in modules)]
 			ignoreFile = open(".gitignore", "w")
-			ignoreFile.write("\n".join(data))
+			ignoreFile.write("\n".join(data)+"\n")
 			ignoreFile.close()
 			data = None
 

@@ -2,9 +2,11 @@ import os
 from optparse import OptionParser
 from project import Project
 from sync import Sync
+from git import Git
 
 class Clone():
 	def __init__(self):
+		self.git = Git()
 		self.parser = OptionParser()
 		self.parser.add_option("-b", "--branch", dest="branch", help="with checkout branch")
 		self.parser.add_option("-C", "--repo-dir", dest="repodir", help="repo directory")
@@ -20,7 +22,10 @@ class Clone():
 		if len(args) <= 0:
 			self.print_usage()
 			return
-		project_dir = os.path.splitext(os.path.basename(args[0]))[0] if len(args) <= 1 else args[1]
+		project_dir = self.git.module_name(args[0])
+		if project_dir == None or len(project_dir) <= 0:
+			print("Unknow project name.Please use git clone, then use mgit sync in the project dir.")
+			return
 		cmd = ['git', 'clone'] + args
 		if options.branch != None:
 			cmd += ["-b", options.branch]

@@ -37,6 +37,13 @@ class Git():
 	def is_repo(self):
 		cmd = """git rev-parse --git-dir >/dev/null 2>&1"""
 		return os.system(cmd) == 0
+	
+	def module_name(self, uri):
+		if uri == None or len(uri) <= 0:
+			return None
+		module=os.path.basename(uri.split(':')[-1])
+		temp = os.path.splitext(module)
+		return temp[0] if temp[-1] == ".git" else module
 
 if __name__ == "__main__":
 	git = Git()
